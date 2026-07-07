@@ -11,6 +11,7 @@ import { SkillActionTypes } from '@/core/brain/types'
 import { GLOBAL_DATA_PATH, HAS_TTS } from '@/constants'
 import {
   CONVERSATION_LOGGER,
+  MESSAGING_APP_MANAGER,
   NLU,
   POST_TURN_MAINTENANCE_QUEUE,
   SELF_MODEL_MANAGER,
@@ -324,6 +325,9 @@ export default class Brain {
                 }
               : finalTextAnswer
           )
+          await MESSAGING_APP_MANAGER.broadcast({
+            message: textAnswer
+          })
 
           if (NLU.currentResponseRoute !== 'react') {
             POST_TURN_MAINTENANCE_QUEUE.enqueue(
